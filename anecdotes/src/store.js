@@ -23,6 +23,9 @@ const useAnecdoteStore = create((set) => ({
   actions: {
     vote: (id) => set(
       state => ({ anecdotes: state.anecdotes.map(anecdote => anecdote.id === id ? {...anecdote, votes: anecdote.votes + 1} : anecdote ) })
+    ),
+    add: (anecdote) => set(
+      state => ({ anecdotes: state.anecdotes.concat({ id: getId(), content: anecdote, votes: 0 })})
     )
   },
 }))

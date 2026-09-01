@@ -1,8 +1,15 @@
 import NoteList from "./components/NoteList"
 import NoteForm from "./components/NoteForm"
 import VisibilityFilter from "./components/VisibilityFilter"
+import { useEffect } from "react"
+// import noteService from "./services/notes"
+import { useNotesActions } from "./store"
 
 const App = () => {
+  const { initialize } = useNotesActions()
+  useEffect(() => {
+    initialize()
+  }, [initialize])
   return (
     <div>
       <NoteForm />

@@ -4,10 +4,10 @@ const AnecdoteForm = () => {
 
   const { add } = useAnecdotesActions()
   
-  const createNew = (e) => {
+  const createNew = async (e) => {
     e.preventDefault()
     const newAnecdote = e.target.input.value
-    add(newAnecdote)
+    await add(newAnecdote)
     e.target.reset()
   }
   return (

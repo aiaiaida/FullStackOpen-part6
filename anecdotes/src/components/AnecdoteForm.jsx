@@ -8,18 +8,18 @@ const AnecdoteForm = () => {
   
   const createNew = async (e) => {
     e.preventDefault()
-    const newAnecdote = e.target.input.value
+    const newAnecdote = e.target.anecdote.value
     if (!newAnecdote) return
     await add(newAnecdote)
     e.target.reset()
-    setNotification(`You created '${newAnecdote}'`)
+    setNotification(`you created '${newAnecdote}'`)
   }
   return (
     <div>
       <h2>create new</h2>
       <form onSubmit={createNew}>
         <div>
-          <input name="input" data-testid="new" />
+          <input name="anecdote" data-testid="new" />
         </div>
         <button type="submit">create</button>
       </form>

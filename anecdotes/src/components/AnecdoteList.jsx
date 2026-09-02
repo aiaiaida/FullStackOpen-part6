@@ -11,11 +11,11 @@ const AnecdoteList = () => {
   const { vote, removeAnecdote } = useAnecdotesActions()
   const voteAnecdote = (id, content) => {
     vote(id)
-    setNotification(`You voted '${content}'`)
+    setNotification(`you voted '${content}'`)
   }
   const deleteAnecdote = (id, content) => {
     removeAnecdote(id)
-    setNotification(`You deleted '${content}'`)
+    setNotification(`you deleted '${content}'`)
   }
   return (
     <div>
@@ -26,9 +26,9 @@ const AnecdoteList = () => {
             has {anecdote.votes}
             <button onClick={() => voteAnecdote(anecdote.id, anecdote.content)}>vote</button>
           </div>
-          <div>
+          {anecdote.votes === 0 && (
             <button onClick={() => deleteAnecdote(anecdote.id, anecdote.content)}>delete</button>
-          </div>
+          )}
         </div>
       ))}
     </div>

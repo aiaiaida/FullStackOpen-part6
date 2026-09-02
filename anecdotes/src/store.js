@@ -1,5 +1,6 @@
 
 import { create } from 'zustand'
+import anecdotesService from './service/anecdotes'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -19,7 +20,7 @@ const asObject = anecdote => ({
 })
 
 const useAnecdoteStore = create((set) => ({
-  anecdotes: anecdotesAtStart.map(asObject),
+  anecdotes: [],
   filter: '',
   actions: {
     vote: (id) => set(
@@ -29,7 +30,11 @@ const useAnecdoteStore = create((set) => ({
       state => ({ anecdotes: state.anecdotes.concat({ id: getId(), content: anecdote, votes: 0 })})
     ),
     setFilter: (text) => set(() => ({ filter: text })
-    )
+    ),
+    initialize: async () => {
+      const anecdotes = await anecdotesService.getAll()
+      set(() => ({ anecdotes }))
+    }
   },
 }))
 

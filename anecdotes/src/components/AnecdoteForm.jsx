@@ -9,6 +9,7 @@ const AnecdoteForm = () => {
   const createNew = async (e) => {
     e.preventDefault()
     const newAnecdote = e.target.input.value
+    if (!newAnecdote) return
     await add(newAnecdote)
     e.target.reset()
     setNotification(`You created '${newAnecdote}'`)

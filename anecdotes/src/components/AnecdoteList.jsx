@@ -8,12 +8,15 @@ const AnecdoteList = () => {
   
   const filtered = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
   const sorted = filtered.toSorted((a,b) => b.votes - a.votes)
-  const { vote } = useAnecdotesActions()
+  const { vote, removeAnecdote } = useAnecdotesActions()
   const voteAnecdote = (id, content) => {
     vote(id)
     setNotification(`You voted '${content}'`)
   }
-
+  const deleteAnecdote = (id, content) => {
+    removeAnecdote(id)
+    setNotification(`You deleted '${content}'`)
+  }
   return (
     <div>
       {sorted.map((anecdote) => (
@@ -22,6 +25,9 @@ const AnecdoteList = () => {
           <div>
             has {anecdote.votes}
             <button onClick={() => voteAnecdote(anecdote.id, anecdote.content)}>vote</button>
+          </div>
+          <div>
+            <button onClick={() => deleteAnecdote(anecdote.id, anecdote.content)}>delete</button>
           </div>
         </div>
       ))}

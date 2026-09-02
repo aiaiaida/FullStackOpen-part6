@@ -18,7 +18,7 @@ const createNew = async (content) => {
   })
   
   if (!response.ok) {
-    throw new Error('Failed to fetch notes')
+    throw new Error('Failed to create notes')
   }
 
   return await response.json()
@@ -32,10 +32,21 @@ const update = async (id, anecdote) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to fetch notes')
+    throw new Error('Failed to update notes')
   }
 
   return await response.json()
 }
 
-export default { getAll, createNew, update }
+const remove = async (id) => {
+  const response = await fetch(`${baseUrl}/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to remove notes')
+  }
+}
+
+
+export default { getAll, createNew, update, remove }

@@ -1,23 +1,25 @@
 import { create } from 'zustand'
 import noteService from './services/notes'
+import { devtools } from 'zustand/middleware'
 
-// const initialNotes = [
-//     {
-//       id: 1,
-//       content: 'Zustand is less complex than Redux',
-//       important: true,
-//     }, {
-//       id: 2,
-//       content: 'React app benefits from custom hooks',
-//       important: false,
-//     }, {
-//       id: 3,
-//       content: 'Remember to sleep well',
-//       important: true,
-//     }
-//   ]
+// const logger = (config) => (set, get) => config(
+//   (...args) => {
+//     console.log('prev state', get())
+//     set(...args)
+//     console.log('next state', get())
+//   }
+// )
 
-const useNoteStore = create((set, get) => ({
+// const useCounterStore = create(set => ({
+//   counter: 0,
+//   actions: {
+//     increment: () => set(state => ({ counter: state.counter + 1 })),
+//     decrement: () => set(state => ({ counter: state.counter - 1 })),
+//     zero: () => set(() => ({ counter: 0 }))
+//   }
+// }))
+
+const useNoteStore = create(devtools((set, get) => ({
   notes: [],
   filter: '',
   actions: {
@@ -38,16 +40,22 @@ const useNoteStore = create((set, get) => ({
       set(() => ({ notes }))
     }
   }
-}))
+})))
 
-export const useNotes = () => useNoteStore(state => state.notes)
+// export const useCounter = () => useCounterStore(state => state.counter)
+// export const useCounterActions = () => useCounterStore(state => state.actions)
+
+// export default useCounterStore
+
+// export const useNotes = () => useNoteStore(state => state.notes)
 export const useFilter = () => useNoteStore((state) => state.filter)
 export const useNotesActions = () => useNoteStore(state => state.actions)
 
-// export const useNotes = () => {
-//   const notes = useNoteStore((state) => state.notes)
-//   const filter = useNoteStore((state) => state.filter)
-//   if (filter === 'important') return notes.filter(n => n.important)
-//   if (filter === 'nonimportant') return notes.filter(n => !n.important)
-//   return notes
-// }
+export default useNoteStore
+export const useNotes = () => {
+  const notes = useNoteStore((state) => state.notes)
+  const filter = useNoteStore((state) => state.filter)
+  if (filter === 'important') return notes.filter(n => n.important)
+  if (filter === 'nonimportant') return notes.filter(n => !n.important)
+  return notes
+}

@@ -1,3 +1,4 @@
+import React from "react"
 import { useAnecdotes, useFilter, useAnecdotesActions } from "../store"
 import { useNotificationActions } from "../store"
 
@@ -18,7 +19,7 @@ const AnecdoteList = () => {
     setNotification(`you deleted '${content}'`)
   }
   return (
-    <div>
+    <div data-testid="anecdote-list">
       {sorted.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>

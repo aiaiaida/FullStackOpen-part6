@@ -1,6 +1,6 @@
 import React from 'react'
-import { describe, beforeEach, it, vi, expect } from 'vitest'
-import { renderHook, act, render, screen } from '@testing-library/react'
+import { describe, beforeEach, it, vi, expect, afterEach } from 'vitest'
+import { renderHook, act, render, screen, cleanup } from '@testing-library/react'
 
 vi.mock('./service/anecdotes', () => ({
   default: {
@@ -17,6 +17,10 @@ import AnecdoteList from './components/AnecdoteList'
 beforeEach(() => {
   useAnecdoteStore.setState({ anecdotes: [], filter: '' })
   vi.clearAllMocks()
+})
+
+afterEach(() => {
+  cleanup()
 })
 
 describe('useAnecdotesActions', () => {
@@ -43,5 +47,18 @@ describe('useAnecdotesActions', () => {
 
     expect(list.children[0].textContent).toContain('B')
     expect(list.children[1].textContent).toContain('A')
+  })
+
+  it('receives a properly filtered list of Anecdotes', () => {
+    const mockAnecdotes = [{ id: 1, content: 'A', votes: 0 }, { id: 2, content: 'B', votes: 1 }]
+    useAnecdoteStore.setState({ anecdotes: mockAnecdotes, filter: 'A' })
+
+    render(<AnecdoteList />)
+
+    const list = screen.getByTestId('anecdote-list')
+
+    expect(list.children[0].textContent).toContain('A')
+    expect(list.children).toHaveLength(1)
+    expect(screen.queryByText('B')).toBeNull()
   })
 })

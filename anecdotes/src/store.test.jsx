@@ -61,4 +61,19 @@ describe('useAnecdotesActions', () => {
     expect(list.children).toHaveLength(1)
     expect(screen.queryByText('B')).toBeNull()
   })
+
+  it('voting increases the number of vote', async () => {
+    const mockAnecdote = { id: 1, content: 'A', votes: 0 }
+    useAnecdoteStore.setState({ anecdotes: [mockAnecdote] })
+    anecdotesService.update.mockResolvedValue({ ...mockAnecdote, votes: 1})
+
+    const { result } = renderHook(() => useAnecdotesActions())
+
+    await act(async () => {
+      await result.current.vote(mockAnecdote.id)
+    })
+
+    const { result: anecdotesResult } = renderHook(() => useAnecdotes())
+    expect(anecdotesResult.current[0].votes).toBe(1)
+  })
 })

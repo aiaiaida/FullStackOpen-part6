@@ -19,7 +19,9 @@ export const useAnecdotes = () => {
     mutationFn: createAnecdote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
-    }
+    },
+    onError: () => {
+    setNotificationTimeout('too short anecdote, must have length 5 or more')}
   })
 
   const updateAnecdoteMutation = useMutation({

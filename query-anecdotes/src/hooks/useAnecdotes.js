@@ -1,7 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { getAnecdotes, createAnecdote, updateAnecdote } from "../requests"
+import useNotification from "./useNotification"
 
 export const useAnecdotes = () => {
+  const { setNotificationTimeout } = useNotification()
   const queryClient = useQueryClient()
 
   const result = useQuery({
@@ -32,6 +34,9 @@ export const useAnecdotes = () => {
     isPending: result.isPending,
     isError: result.isError,
     addAnecdote: (content) => newAnecdoteMutation.mutate({ content, votes: 0 }),
-    vote: (anecdote) => updateAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+    vote: (anecdote) => {
+      updateAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+      setNotificationTimeout(`anecdote '${anecdote.content}' voted`)
+    }
   }
 }
